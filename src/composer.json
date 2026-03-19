@@ -1,0 +1,17 @@
+{
+    "name": "root/html",
+    "autoload": {
+        "psr-4": {
+            "Root\\Html\\": "src/",
+            "App\\Domain\\": "ToDoList/src/Domain/",
+            "App\\Application\\": "ToDoList/Application/",
+            "App\\Infrastructure\\": "ToDoList/Infrastructure/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Crisciany Souza"
+        }
+    ],
+    "require": {}
+}

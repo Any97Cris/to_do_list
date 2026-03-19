@@ -1,0 +1,26 @@
+services:
+  php:
+    build: .
+    image: php:8.2-fpm
+    container_name: php-estudos-php
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - php-estudos-network
+
+  nginx:
+    image: nginx:latest
+    container_name: php-estudos-nginx
+    ports:
+      - "8002:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - php-estudos-network
+
+networks:
+  php-estudos-network:
+    driver: bridge
