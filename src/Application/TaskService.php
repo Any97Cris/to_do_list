@@ -7,6 +7,7 @@ use App\Domain\Entity\Task;
 use App\Domain\Repository\TaskRepositoryInterface;
 use App\Domain\ValueObject\TaskTitle;
 use App\Domain\ValueObject\TaskDescription;
+use App\Domain\ValueObject\TaskCreatedAt;
 
 class TaskService
 {
@@ -17,15 +18,17 @@ class TaskService
         $this->taskRepository = $taskRepository;
     }
 
-    public function createTask(CreateTaskDTO $dto): void
+    public function createTask(CreateTaskDTO $dto): Task
     {
-        $task = 
-            new Task(
-                new TaskTitle($dto->title),
-                new TaskDescription($dto->description),
-            );
+        $task = new Task(
+            new TaskTitle($dto->title),
+            new TaskDescription($dto->description),
+            new TaskCreatedAt(new \DateTimeImmutable()),
+        );
 
         $this->taskRepository->save($task);
+
+        return $task;
     }
 
     public function completeTask(string $id): void

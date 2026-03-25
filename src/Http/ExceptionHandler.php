@@ -6,7 +6,7 @@ class ExceptionHandler
 {
     public static function handle(\Throwable $e): void
     {
-        if($e instanceof \DomainException){
+        if($e instanceof \DomainException || $e instanceof \InvalidArgumentException){
             http_response_code(400);
             echo json_encode(['error' => $e->getMessage()]);
             return;

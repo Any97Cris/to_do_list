@@ -61,6 +61,25 @@ class Task
 
     public function getCompletedAt(): ?\DateTimeImmutable
     {
-        return $this->concludedAt;
+        return $this->completedAt;
+    }
+
+    public static function reconstitute(
+        string $id,
+        string $title,
+        string $description,
+        TaskStatus $status,
+        \DateTimeImmutable $createdAt,
+        ?\DateTimeImmutable $completedAt
+    ): self {
+        $instance = new self(
+            new TaskTitle($title),
+            new TaskDescription($description),
+            new TaskCreatedAt($createdAt)
+        );
+        $instance->id = $id;
+        $instance->status = $status;
+        $instance->completedAt = $completedAt;
+        return $instance;
     }
 }

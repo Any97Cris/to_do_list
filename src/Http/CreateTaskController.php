@@ -11,14 +11,13 @@ class CreateTaskController
     {
     }
 
-    public function handle(array $request)
+    public function handle(): string
     {
         $data = json_decode(file_get_contents('php://input'), true);
         $dto = new CreateTaskDTO($data['title'] ?? '', $data['description'] ?? '');
-        
-        $this->taskService->createTask($dto);
 
-        return json_encode(['message' => 'Task created']);
+        $task = $this->taskService->createTask($dto);
 
+        return json_encode(['message' => 'Task created', 'id' => $task->getId()]);
     }
 }

@@ -10,17 +10,11 @@ class CompleteTaskController
 
     public function __construct(TaskService $taskService)
     {
+        $this->taskService = $taskService;
     }
 
-    public function handle(): string
+    public function handle(string $id): string
     {
-        $data = json_decode(file_get_contents('php://input'), true);
-        $id = $data['id'] ?? null;
-
-        if (!$id) {
-            throw new \InvalidArgumentException('Task ID is required.');
-        }
-        
         $this->taskService->completeTask($id);
 
         return json_encode(['message' => 'Task completed']);

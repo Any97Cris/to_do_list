@@ -1,0 +1,13 @@
+# Dependências
+src/vendor/
+
+# Variáveis de ambiente
+src/.env
+
+# Cache e logs
+*.log
+*.cache
+
+# Sistemas operacionais
+.DS_Store
+Thumbs.db

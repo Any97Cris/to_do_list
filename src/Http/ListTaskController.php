@@ -18,9 +18,12 @@ class ListTaskController
 
         foreach ($tasks as $task){
             $response[] = [
-                'title' => $task->getTitle(),
+                'id'          => $task->getId(),
+                'title'       => $task->getTitle()->getValue(),
                 'description' => $task->getDescription(),
-                'status' => $task->getStatus(),
+                'status'      => $task->getStatus()->value,
+                'created_at'  => $task->getCreatedAt()->getDateTimeImmutable()->format('Y-m-d H:i:s'),
+                'completed_at'=> $task->getCompletedAt()?->format('Y-m-d H:i:s'),
             ];
         }
 
