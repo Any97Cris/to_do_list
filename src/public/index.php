@@ -24,19 +24,20 @@ use App\Http\ExceptionHandler;
 use App\Infrastructure\Database\Connection;
 use App\Infrastructure\Persistence\MySQLTaskRepository;
 
-$pdo        = Connection::getInstance();
-$repository = new MySQLTaskRepository($pdo);
-$taskService = new TaskService($repository);
-
-$router = new Router();
-
-$router->add('GET', '/tasks',         fn()        => (new ListTaskController($taskService))->handle());
-$router->add('POST', '/tasks',        fn()        => (new CreateTaskController($taskService))->handle());
-$router->add('PUT', '/tasks/{id}',    fn($id)     => (new CompleteTaskController($taskService))->handle($id));
-
 try {
+    $pdo         = Connection::getInstance();
+    $repository  = new MySQLTaskRepository($pdo);
+    $taskService = new TaskService($repository);
+
+    $router = new Router();
+
+    $router->add('GET', '/tasks',      fn()    => (new ListTaskController($taskService))->handle());
+    $router->add('POST', '/tasks',     fn()    => (new CreateTaskController($taskService))->handle());
+    $router->add('PUT', '/tasks/{id}', fn($id) => (new CompleteTaskController($taskService))->handle($id));
+
     $method = $_SERVER['REQUEST_METHOD'];
     $path   = strtok($_SERVER['REQUEST_URI'], '?');
+
     echo $router->dispatch($method, $path);
 } catch (\Throwable $e) {
     ExceptionHandler::handle($e);
