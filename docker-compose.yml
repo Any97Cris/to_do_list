@@ -1,10 +1,11 @@
 services:
   php:
     build: .
-    image: php:8.2-fpm
     container_name: php-estudos-php
     volumes:
       - ./src:/var/www/html
+    depends_on:
+      - mysql
     networks:
       - php-estudos-network
 
@@ -21,6 +22,38 @@ services:
     networks:
       - php-estudos-network
 
+  mysql:
+    image: mysql:8.0
+    container_name: php-estudos-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todolist
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./src/database/create_tasks_table.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - php-estudos-network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: php-estudos-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - php-estudos-network
+
 networks:
   php-estudos-network:
     driver: bridge
+
+volumes:
+  mysql_data:
